@@ -36,7 +36,22 @@ const router = Router();
  *           type: boolean
  */
 
-// GET /api/productos
+/**
+ * @swagger
+ * /api/productos:
+ *   get:
+ *     summary: Lista todos los productos
+ *     tags: [Productos]
+ *     responses:
+ *       200:
+ *         description: Listado de productos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Producto'
+ */
 router.get('/', async (_req, res) => {
   try {
     const pool = await getPool();
@@ -55,7 +70,30 @@ router.get('/', async (_req, res) => {
   }
 });
 
-// GET /api/productos/:id
+
+/**
+ * @swagger
+ * /api/productos/{id}:
+ *   get:
+ *     summary: Obtiene un producto por ID
+ *     tags: [Productos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del producto
+ *     responses:
+ *       200:
+ *         description: Producto encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Producto'
+ *       404:
+ *         description: Producto no encontrado
+ */
 router.get(
   '/:id',
   param('id').isInt(),
@@ -87,7 +125,27 @@ router.get(
   }
 );
 
-// POST /api/productos
+
+/**
+ * @swagger
+ * /api/productos:
+ *   post:
+ *     summary: Crea un nuevo producto
+ *     tags: [Productos]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Producto'
+ *     responses:
+ *       201:
+ *         description: Producto creado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Producto'
+ */
 router.post(
   '/',
   body('categoria_id').isInt(),
@@ -129,7 +187,36 @@ router.post(
   }
 );
 
-// PUT /api/productos/:id
+
+/**
+ * @swagger
+ * /api/productos/{id}:
+ *   put:
+ *     summary: Actualiza un producto
+ *     tags: [Productos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del producto
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Producto'
+ *     responses:
+ *       200:
+ *         description: Producto actualizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Producto'
+ *       404:
+ *         description: Producto no encontrado
+ */
 router.put(
   '/:id',
   param('id').isInt(),
@@ -200,7 +287,26 @@ router.put(
   }
 );
 
-// DELETE /api/productos/:id
+
+/**
+ * @swagger
+ * /api/productos/{id}:
+ *   delete:
+ *     summary: Elimina un producto
+ *     tags: [Productos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del producto
+ *     responses:
+ *       200:
+ *         description: Producto eliminado
+ *       404:
+ *         description: Producto no encontrado
+ */
 router.delete(
   '/:id',
   param('id').isInt(),

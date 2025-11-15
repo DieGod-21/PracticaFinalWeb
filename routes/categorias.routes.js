@@ -28,7 +28,22 @@ const router = Router();
  *           example: Hamburguesas
  */
 
-// GET /api/categorias
+/**
+ * @swagger
+ * /api/categorias:
+ *   get:
+ *     summary: Lista todas las categorías
+ *     tags: [Categorias]
+ *     responses:
+ *       200:
+ *         description: Listado de categorías
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Categoria'
+ */
 router.get('/', async (_req, res) => {
   try {
     const pool = await getPool();
@@ -44,7 +59,30 @@ router.get('/', async (_req, res) => {
   }
 });
 
-// GET /api/categorias/:id
+
+/**
+ * @swagger
+ * /api/categorias/{id}:
+ *   get:
+ *     summary: Obtiene una categoría por ID
+ *     tags: [Categorias]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de la categoría
+ *     responses:
+ *       200:
+ *         description: Categoría encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Categoria'
+ *       404:
+ *         description: Categoría no encontrada
+ */
 router.get(
   '/:id',
   param('id').isInt(),
@@ -67,7 +105,27 @@ router.get(
   }
 );
 
-// POST /api/categorias
+
+/**
+ * @swagger
+ * /api/categorias:
+ *   post:
+ *     summary: Crea una nueva categoría
+ *     tags: [Categorias]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Categoria'
+ *     responses:
+ *       201:
+ *         description: Categoría creada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Categoria'
+ */
 router.post(
   '/',
   body('nombre').isString().notEmpty(),
@@ -94,7 +152,36 @@ router.post(
   }
 );
 
-// PUT /api/categorias/:id
+
+/**
+ * @swagger
+ * /api/categorias/{id}:
+ *   put:
+ *     summary: Actualiza una categoría
+ *     tags: [Categorias]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de la categoría
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Categoria'
+ *     responses:
+ *       200:
+ *         description: Categoría actualizada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Categoria'
+ *       404:
+ *         description: Categoría no encontrada
+ */
 router.put(
   '/:id',
   param('id').isInt(),
@@ -132,7 +219,26 @@ router.put(
   }
 );
 
-// DELETE /api/categorias/:id
+
+/**
+ * @swagger
+ * /api/categorias/{id}:
+ *   delete:
+ *     summary: Elimina una categoría
+ *     tags: [Categorias]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de la categoría
+ *     responses:
+ *       200:
+ *         description: Categoría eliminada
+ *       404:
+ *         description: Categoría no encontrada
+ */
 router.delete(
   '/:id',
   param('id').isInt(),

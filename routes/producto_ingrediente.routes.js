@@ -13,7 +13,22 @@ const router = Router();
  *   description: Relación muchos a muchos entre productos e ingredientes
  */
 
-// GET todos
+/**
+ * @swagger
+ * /api/producto-ingrediente:
+ *   get:
+ *     summary: Lista todas las relaciones producto-ingrediente
+ *     tags: [ProductoIngrediente]
+ *     responses:
+ *       200:
+ *         description: Listado de relaciones
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ProductoIngrediente'
+ */
 router.get('/', async (_req, res) => {
   try {
     const pool = await getPool();
@@ -38,7 +53,30 @@ router.get('/', async (_req, res) => {
   }
 });
 
-// GET por id
+
+/**
+ * @swagger
+ * /api/producto-ingrediente/{id}:
+ *   get:
+ *     summary: Obtiene una relación producto-ingrediente por ID
+ *     tags: [ProductoIngrediente]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de la relación
+ *     responses:
+ *       200:
+ *         description: Relación encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ProductoIngrediente'
+ *       404:
+ *         description: Relación no encontrada
+ */
 router.get(
   '/:id',
   param('id').isInt(),
@@ -76,7 +114,27 @@ router.get(
   }
 );
 
-// POST
+
+/**
+ * @swagger
+ * /api/producto-ingrediente:
+ *   post:
+ *     summary: Crea una nueva relación producto-ingrediente
+ *     tags: [ProductoIngrediente]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProductoIngrediente'
+ *     responses:
+ *       201:
+ *         description: Relación creada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ProductoIngrediente'
+ */
 router.post(
   '/',
   body('producto_id').isInt(),
@@ -122,7 +180,36 @@ router.post(
   }
 );
 
-// PUT
+
+/**
+ * @swagger
+ * /api/producto-ingrediente/{id}:
+ *   put:
+ *     summary: Actualiza una relación producto-ingrediente
+ *     tags: [ProductoIngrediente]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de la relación
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProductoIngrediente'
+ *     responses:
+ *       200:
+ *         description: Relación actualizada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ProductoIngrediente'
+ *       404:
+ *         description: Relación no encontrada
+ */
 router.put(
   '/:id',
   param('id').isInt(),
@@ -196,7 +283,26 @@ router.put(
   }
 );
 
-// DELETE
+
+/**
+ * @swagger
+ * /api/producto-ingrediente/{id}:
+ *   delete:
+ *     summary: Elimina una relación producto-ingrediente
+ *     tags: [ProductoIngrediente]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID de la relación
+ *     responses:
+ *       200:
+ *         description: Relación eliminada
+ *       404:
+ *         description: Relación no encontrada
+ */
 router.delete(
   '/:id',
   param('id').isInt(),

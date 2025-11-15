@@ -13,7 +13,22 @@ const router = Router();
  *   description: CRUD para ingredientes
  */
 
-// GET todos
+/**
+ * @swagger
+ * /api/ingredientes:
+ *   get:
+ *     summary: Lista todos los ingredientes
+ *     tags: [Ingredientes]
+ *     responses:
+ *       200:
+ *         description: Listado de ingredientes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Ingrediente'
+ */
 router.get('/', async (_req, res) => {
   try {
     const pool = await getPool();
@@ -29,7 +44,30 @@ router.get('/', async (_req, res) => {
   }
 });
 
-// GET por id
+
+/**
+ * @swagger
+ * /api/ingredientes/{id}:
+ *   get:
+ *     summary: Obtiene un ingrediente por ID
+ *     tags: [Ingredientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del ingrediente
+ *     responses:
+ *       200:
+ *         description: Ingrediente encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Ingrediente'
+ *       404:
+ *         description: Ingrediente no encontrado
+ */
 router.get(
   '/:id',
   param('id').isInt(),
@@ -54,7 +92,27 @@ router.get(
   }
 );
 
-// POST
+
+/**
+ * @swagger
+ * /api/ingredientes:
+ *   post:
+ *     summary: Crea un nuevo ingrediente
+ *     tags: [Ingredientes]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Ingrediente'
+ *     responses:
+ *       201:
+ *         description: Ingrediente creado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Ingrediente'
+ */
 router.post(
   '/',
   body('nombre').isString().notEmpty(),
@@ -83,7 +141,36 @@ router.post(
   }
 );
 
-// PUT
+
+/**
+ * @swagger
+ * /api/ingredientes/{id}:
+ *   put:
+ *     summary: Actualiza un ingrediente
+ *     tags: [Ingredientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del ingrediente
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Ingrediente'
+ *     responses:
+ *       200:
+ *         description: Ingrediente actualizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Ingrediente'
+ *       404:
+ *         description: Ingrediente no encontrado
+ */
 router.put(
   '/:id',
   param('id').isInt(),
@@ -135,7 +222,26 @@ router.put(
   }
 );
 
-// DELETE
+
+/**
+ * @swagger
+ * /api/ingredientes/{id}:
+ *   delete:
+ *     summary: Elimina un ingrediente
+ *     tags: [Ingredientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del ingrediente
+ *     responses:
+ *       200:
+ *         description: Ingrediente eliminado
+ *       404:
+ *         description: Ingrediente no encontrado
+ */
 router.delete(
   '/:id',
   param('id').isInt(),
