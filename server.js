@@ -1,4 +1,3 @@
-// server.js
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -7,7 +6,6 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './docs/swagger.js';
 import { getPool } from './config/db.js';
 
-// Rutas
 import categoriasRouter from './routes/categorias.routes.js';
 import productosRouter from './routes/productos.routes.js';
 import ingredientesRouter from './routes/ingredientes.routes.js';
@@ -16,11 +14,22 @@ import productoIngredienteRouter from './routes/producto_ingrediente.routes.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// --- CONFIGURACIÓN DE CORS (IMPORTANTE PARA RENDER + FRONTEND) ---
+const allowedOrigins = [
+  "http://localhost:5500",
+  "http://127.0.0.1:5500",
+  "https://DieGod-21.github.io",
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 app.use(helmet());
-app.use(cors());
 app.use(express.json());
 
-// Swagger UI
+// Swagger
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/docs-json', (_req, res) => res.json(swaggerSpec));
 
@@ -30,7 +39,7 @@ app.use('/api/productos', productosRouter);
 app.use('/api/ingredientes', ingredientesRouter);
 app.use('/api/producto-ingrediente', productoIngredienteRouter);
 
-// Healthcheck + prueba DB
+// Health
 app.get('/health', async (_req, res) => {
   try {
     const pool = await getPool();
@@ -44,5 +53,5 @@ app.get('/health', async (_req, res) => {
 
 app.listen(PORT, () => {
   console.log(`API escuchando en http://localhost:${PORT}`);
-  console.log(`Swagger UI:       http://localhost:${PORT}/docs`);
+  console.log(`Swagger UI: http://localhost:${PORT}/docs`);
 });
